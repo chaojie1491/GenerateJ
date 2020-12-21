@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">util.SQLiteDialect</property> <!-- 数据库方言 -->
+        <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property><!-- 引用jdbc包 -->
+        <property name="hibernate.connection.url">jdbc:sqlite:G:/java/javaFx/GenerateJ/src/main/resources/db/Gen</property> <!-- 数据库链接 -->
+        <!--        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property> &lt;!&ndash; 数据库方言 &ndash;&gt;-->
+        <!--        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>&lt;!&ndash; 引用jdbc包 &ndash;&gt;-->
+        <!--                <property name="hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/bbs?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;serverTimezone=CTT&amp;nullCatalogMeansCurrent=true</property> &lt;!&ndash; 数据库链接 &ndash;&gt;-->
+        <!--        <property name="hibernate.connection.username">root</property>-->
+        <!--        <property name="hibernate.connection.password">1234</property>-->
+
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.show_sql">true</property>
+        <mapping class="entity.OriginEntity"/>
+        <mapping resource="hbm/Origin.xml"/>
+        <mapping resource="hbm/RuleEntityhbm.xml"/>
+        <mapping class="entity.RuleEntity"/>
+        <mapping resource="hbm/FtlFileEntityhbm.xml"/>
+        <mapping class="entity.FtlFileEntity"/>
+        <mapping resource="hbm/FtlFileEntityhbm.xml"/>
+        <mapping resource="SettingEntityhbm.xml"/>
+        <mapping class="entity.SettingEntity"/>
+        <mapping class="entity.TableInfoEntity"/>
+        <mapping resource="hbm/TableInfoEntityhbm.xml"/>
+        <mapping resource="hbm/TableInfoEntityhbm.xml"/>
+        <mapping resource="hbm/TableInfoEntityhbm.xml"/>
+
+        <!-- <property name="connection.username"/> -->
+        <!-- <property name="connection.password"/> -->
+
+        <!-- DB schema will be updated if needed -->
+        <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
+    </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="485.0" prefWidth="565.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="lblCSName" alignment="CENTER_RIGHT" layoutX="29.0" layoutY="33.0" prefHeight="15.0" prefWidth="50.0" text="名称:" AnchorPane.leftAnchor="29.0" AnchorPane.topAnchor="33.0" />
+      <TextField fx:id="name" layoutX="89.0" layoutY="29.0" prefHeight="23.0" prefWidth="178.0" promptText="名称" AnchorPane.leftAnchor="89.0" AnchorPane.topAnchor="29.0" />
+      <Label fx:id="lblCSAddress1" alignment="CENTER_RIGHT" layoutX="9.0" layoutY="63.0" prefHeight="15.0" prefWidth="70.0" text="表前缀移除:" />
+      <Label fx:id="lblCSName1" alignment="CENTER_RIGHT" layoutX="279.0" layoutY="33.0" prefWidth="80.0" text="语言:" AnchorPane.leftAnchor="279.0" />
+      <ChoiceBox fx:id="language" layoutX="367.0" layoutY="29.0" prefHeight="23.0" prefWidth="178.0" AnchorPane.topAnchor="25.0" />
+      <Label fx:id="lblCSAddress11" alignment="CENTER_RIGHT" layoutY="93.0" prefHeight="15.0" prefWidth="80.0" text="Entity Prefix:" AnchorPane.topAnchor="93.0" />
+      <TextField fx:id="entityPrefix" layoutX="90.0" layoutY="89.0" prefHeight="23.0" prefWidth="178.0" promptText="Entity Prefix" AnchorPane.topAnchor="89.0" />
+      <Separator layoutY="181.0" prefHeight="15.0" prefWidth="565.0" />
+      <TextField fx:id="namespace" layoutX="367.0" layoutY="59.0" prefHeight="23.0" prefWidth="178.0" promptText="命名空间" AnchorPane.topAnchor="59.0" />
+      <Label fx:id="lblCSAddress12" alignment="CENTER_RIGHT" layoutX="279.0" layoutY="65.0" prefHeight="15.0" prefWidth="80.0" text="命名空间:" />
+      <CheckBox fx:id="uc" layoutX="90.0" layoutY="124.0" mnemonicParsing="false" />
+      <Label fx:id="lblCSAddress121" alignment="CENTER_RIGHT" layoutY="125.0" prefHeight="15.0" prefWidth="80.0" text="首字符大写:" AnchorPane.topAnchor="124.0" />
+      <Label fx:id="lblCSAddress111" alignment="CENTER_RIGHT" layoutX="279.0" layoutY="93.0" prefHeight="15.0" prefWidth="80.0" text="Entity Suffix:" />
+      <Button fx:id="save" layoutX="490.0" layoutY="152.0" mnemonicParsing="false" text="保存" />
+      <TextField fx:id="entitySuffix" layoutX="367.0" layoutY="89.0" prefHeight="23.0" prefWidth="178.0" promptText="Entity Suffix" AnchorPane.topAnchor="89.0" />
+      <TableView fx:id="ruleTable" layoutX="130.0" layoutY="185.0" prefHeight="300.0" prefWidth="565.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="185.0" />
+      <TextField fx:id="tablePrefix" layoutX="89.0" layoutY="59.0" prefHeight="23.0" prefWidth="178.0" promptText="表前缀" AnchorPane.topAnchor="59.0" />
+   </children>
+</AnchorPane>
