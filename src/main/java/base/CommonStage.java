@@ -97,7 +97,6 @@ public class CommonStage {
         stage.getIcons().add(image);
         stage.setScene(scene);
         stage.setTitle(title);
-        stage.setAlwaysOnTop(true);
         stage.setMaximized(true);
         stageStack.add(stage);
         return stage;

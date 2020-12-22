@@ -182,12 +182,14 @@ public class FtlFileController extends Scene {
         ftlFileEntity.setCreateTime(DateTime.now().toStringDefaultTimeZone());
         ftlFileEntity.setOriginPath(file.getAbsolutePath());
         ftlFileEntity.setNowPath(newFile.getAbsolutePath());
+        ftlFileEntity.setNowName(newFile.getName());
         Transaction transaction;
         if (session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE)) {
             transaction = session.getTransaction();
         } else {
             transaction = session.beginTransaction();
         }
+        session.clear();
         session.saveOrUpdate(ftlFileEntity);
         transaction.commit();
     }

@@ -21,12 +21,14 @@
       <Separator layoutY="181.0" prefHeight="15.0" prefWidth="565.0" />
       <TextField fx:id="namespace" layoutX="367.0" layoutY="59.0" prefHeight="23.0" prefWidth="178.0" promptText="命名空间" AnchorPane.topAnchor="59.0" />
       <Label fx:id="lblCSAddress12" alignment="CENTER_RIGHT" layoutX="279.0" layoutY="65.0" prefHeight="15.0" prefWidth="80.0" text="命名空间:" />
-      <CheckBox fx:id="uc" layoutX="90.0" layoutY="124.0" mnemonicParsing="false" />
-      <Label fx:id="lblCSAddress121" alignment="CENTER_RIGHT" layoutY="125.0" prefHeight="15.0" prefWidth="80.0" text="首字符大写:" AnchorPane.topAnchor="124.0" />
+      <CheckBox fx:id="uc" layoutX="367.0" layoutY="122.0" mnemonicParsing="false" />
+      <Label fx:id="lblCSAddress121" alignment="CENTER_RIGHT" layoutX="283.0" layoutY="122.0" prefHeight="15.0" prefWidth="80.0" text="首字符大写:" />
       <Label fx:id="lblCSAddress111" alignment="CENTER_RIGHT" layoutX="279.0" layoutY="93.0" prefHeight="15.0" prefWidth="80.0" text="Entity Suffix:" />
       <Button fx:id="save" layoutX="490.0" layoutY="152.0" mnemonicParsing="false" text="保存" />
       <TextField fx:id="entitySuffix" layoutX="367.0" layoutY="89.0" prefHeight="23.0" prefWidth="178.0" promptText="Entity Suffix" AnchorPane.topAnchor="89.0" />
       <TableView fx:id="ruleTable" layoutX="130.0" layoutY="185.0" prefHeight="300.0" prefWidth="565.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="185.0" />
       <TextField fx:id="tablePrefix" layoutX="89.0" layoutY="59.0" prefHeight="23.0" prefWidth="178.0" promptText="表前缀" AnchorPane.topAnchor="59.0" />
+      <Label fx:id="lblCSAddress112" alignment="CENTER_RIGHT" layoutY="120.0" prefHeight="15.0" prefWidth="80.0" text="继承:" AnchorPane.topAnchor="122.0" />
+      <TextField fx:id="parentClass" layoutX="90.0" layoutY="116.0" prefHeight="23.0" prefWidth="178.0" promptText="继承" AnchorPane.topAnchor="119.0" />
    </children>
 </AnchorPane>

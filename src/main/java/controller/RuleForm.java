@@ -34,6 +34,7 @@ public class RuleForm extends Scene {
     TextField entityPrefix;
     TextField entitySuffix;
     TextField tablePrefix;
+    TextField parentClass;
     ChoiceBox<String> language;
     CheckBox uc;
 
@@ -143,8 +144,8 @@ public class RuleForm extends Scene {
                                     Transaction transaction = session.beginTransaction();
                                     Statement st;
                                     String sql = "delete from rule where id = " + ruleEntity.getId();
-                                    System.out.println("删除:"+sql);
-                                            st = connection.createStatement();
+                                    System.out.println("删除:" + sql);
+                                    st = connection.createStatement();
                                     st.executeUpdate(sql);
                                     st.close();
                                     transaction.commit();
@@ -193,6 +194,7 @@ public class RuleForm extends Scene {
             tablePrefix = (TextField) this.lookup("#tablePrefix");
             entityPrefix = (TextField) this.lookup("#entityPrefix");
             entitySuffix = (TextField) this.lookup("#entitySuffix");
+            parentClass = (TextField) this.lookup("#parentClass");
             uc = (CheckBox) this.lookup("#uc");
             ruleEntityTableView = (TableView<RuleEntity>) this.lookup("#ruleTable");
             initTable();
@@ -211,6 +213,7 @@ public class RuleForm extends Scene {
                     ruleEntity.setIsUc(uc.selectedProperty().getValue() ? "Y" : "N");
                     ruleEntity.setNamespace(namespace.getText());
                     ruleEntity.setRuleName(name.getText());
+                    ruleEntity.setPatentClass(parentClass.getText());
                     Session session = HibernateUtil.currentSession();
                     Transaction transaction;
                     if (session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE)) {
@@ -218,9 +221,10 @@ public class RuleForm extends Scene {
                     } else {
                         transaction = session.beginTransaction();
                     }
-                    session.merge(ruleEntity);
-                    transaction.commit();
                     session.clear();
+                    session.saveOrUpdate(ruleEntity);
+                    transaction.commit();
+
                     this.refresh();
                 }
             });

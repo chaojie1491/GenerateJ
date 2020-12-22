@@ -28,6 +28,8 @@
         <mapping resource="hbm/TableInfoEntityhbm.xml"/>
         <mapping resource="hbm/TableInfoEntityhbm.xml"/>
         <mapping resource="hbm/TableInfoEntityhbm.xml"/>
+        <mapping resource="hbm/RuleEntityhbm.xml"/>
+        <mapping resource="hbm/FtlFileEntityhbm.xml"/>
 
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->

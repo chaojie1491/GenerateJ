@@ -7,6 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "rule", schema = "main")
 public class RuleEntity {
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private short id;
     private String ruleName;
     private String language;
@@ -15,7 +16,7 @@ public class RuleEntity {
     private String entityPrefix;
     private String entitySuffix;
     private String isUc;
-    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    private String patentClass;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -125,5 +126,15 @@ public class RuleEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, ruleName, language, tablePrefix, namespace, entityPrefix, entitySuffix, isUc);
+    }
+
+    @Basic
+    @Column(name = "patent_class", nullable = true, length = -1)
+    public String getPatentClass() {
+        return patentClass;
+    }
+
+    public void setPatentClass(String patentClass) {
+        this.patentClass = patentClass;
     }
 }

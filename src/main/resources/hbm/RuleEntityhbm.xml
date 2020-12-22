@@ -30,5 +30,8 @@
         <property name="isUc">
             <column name="isUc" sql-type="text" not-null="true"/>
         </property>
+        <property name="patentClass">
+            <column name="patent_class" sql-type="text" not-null="true"/>
+        </property>
     </class>
 </hibernate-mapping>

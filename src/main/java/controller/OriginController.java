@@ -155,6 +155,7 @@ public class OriginController extends BorderPane {
                             CommonStage.db_info.clear();
                             CommonStage.db_info.put("db_table", jsonArray);
                             CommonStage.db_info.put("db_name", config.getString("database"));
+                            CommonStage.db_info.put("config", config);
                             con.close();
                             updateProgress(100, 100);
 
@@ -162,7 +163,7 @@ public class OriginController extends BorderPane {
                                 @Override
                                 public void run() {
                                     Scene scene = new GenController(new BorderPane(), 800, 600);
-                                    CommonStage.createStageHaveSceneMax("代码生成器", new Image("/images/icon/logo.png"), Style.DARK,
+                                    CommonStage.createStage("代码生成器", new Image("/images/icon/logo.png"), Style.DARK,
                                             scene).show();
                                     updateProgress(0, 100);
                                     hideProgress();
@@ -284,6 +285,8 @@ public class OriginController extends BorderPane {
                             CommonStage.db_info.clear();
                             CommonStage.db_info.put("db_table", jsonArray);
                             CommonStage.db_info.put("db_name", config.getString("database"));
+                            CommonStage.db_info.put("config", config);
+
                             con.close();
                             updateProgress(100, 100);
 
@@ -291,7 +294,7 @@ public class OriginController extends BorderPane {
                                 @Override
                                 public void run() {
                                     Scene scene = new GenController(new BorderPane(), 800, 600);
-                                    CommonStage.createStageHaveSceneMax("代码生成器", new Image("/images/icon/logo.png"), Style.DARK,
+                                    CommonStage.createStage("代码生成器", new Image("/images/icon/logo.png"), Style.DARK,
                                             scene).show();
                                     updateProgress(0, 100);
                                     hideProgress();

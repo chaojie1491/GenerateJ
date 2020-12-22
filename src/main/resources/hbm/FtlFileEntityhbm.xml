@@ -21,5 +21,8 @@
         <property name="nowPath">
             <column name="now_path" sql-type="text" not-null="true"/>
         </property>
+        <property name="nowName">
+            <column name="now_name" sql-type="text" not-null="true"/>
+        </property>
     </class>
 </hibernate-mapping>

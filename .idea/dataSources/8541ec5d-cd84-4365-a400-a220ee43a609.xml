@@ -43,186 +43,194 @@
       <Position>5</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <index id="18" parent="6" name="ftl_file_id_uindex">
+    <column id="18" parent="6" name="now_name">
+      <Position>6</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <index id="19" parent="6" name="ftl_file_id_uindex">
       <ColNames>id</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="19" parent="6" name="ftl_file_pk">
+    <key id="20" parent="6" name="ftl_file_pk">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>ftl_file_id_uindex</UnderlyingIndexName>
     </key>
-    <column id="20" parent="7" name="id">
+    <column id="21" parent="7" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="21" parent="7" name="name">
+    <column id="22" parent="7" name="name">
       <Position>2</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="22" parent="7" name="type">
+    <column id="23" parent="7" name="type">
       <Position>3</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="23" parent="7" name="config">
+    <column id="24" parent="7" name="config">
       <Position>4</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="24" parent="7" name="database">
+    <column id="25" parent="7" name="database">
       <Position>5</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <index id="25" parent="7" name="origin_id_uindex">
+    <index id="26" parent="7" name="origin_id_uindex">
       <ColNames>id</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="26" parent="7" name="origin_pk">
+    <key id="27" parent="7" name="origin_pk">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>origin_id_uindex</UnderlyingIndexName>
     </key>
-    <column id="27" parent="8" name="id">
+    <column id="28" parent="8" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="28" parent="8" name="rule_name">
+    <column id="29" parent="8" name="rule_name">
       <Position>2</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="29" parent="8" name="language">
+    <column id="30" parent="8" name="language">
       <Position>3</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="30" parent="8" name="table_prefix">
+    <column id="31" parent="8" name="table_prefix">
       <Position>4</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="31" parent="8" name="namespace">
+    <column id="32" parent="8" name="namespace">
       <Position>5</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="32" parent="8" name="entity_prefix">
+    <column id="33" parent="8" name="entity_prefix">
       <Position>6</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="33" parent="8" name="entity_suffix">
+    <column id="34" parent="8" name="entity_suffix">
       <Position>7</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="34" parent="8" name="isUc">
+    <column id="35" parent="8" name="isUc">
       <Position>8</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <index id="35" parent="8" name="rule_id_uindex">
+    <column id="36" parent="8" name="patent_class">
+      <Position>9</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <index id="37" parent="8" name="rule_id_uindex">
       <ColNames>id</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="36" parent="8" name="rule_pk">
+    <key id="38" parent="8" name="rule_pk">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>rule_id_uindex</UnderlyingIndexName>
     </key>
-    <column id="37" parent="9" name="id">
+    <column id="39" parent="9" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="38" parent="9" name="ftl_path">
+    <column id="40" parent="9" name="ftl_path">
       <Position>2</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="39" parent="9" name="out_path">
+    <column id="41" parent="9" name="out_path">
       <Position>3</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <index id="40" parent="9" name="setting_id_uindex">
+    <index id="42" parent="9" name="setting_id_uindex">
       <ColNames>id</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="41" parent="9" name="setting_pk">
+    <key id="43" parent="9" name="setting_pk">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>setting_id_uindex</UnderlyingIndexName>
     </key>
-    <column id="42" parent="10" name="type">
+    <column id="44" parent="10" name="type">
       <Position>1</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="43" parent="10" name="name">
+    <column id="45" parent="10" name="name">
       <Position>2</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="44" parent="10" name="tbl_name">
+    <column id="46" parent="10" name="tbl_name">
       <Position>3</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="45" parent="10" name="rootpage">
+    <column id="47" parent="10" name="rootpage">
       <Position>4</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="46" parent="10" name="sql">
+    <column id="48" parent="10" name="sql">
       <Position>5</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="47" parent="11" name="name">
+    <column id="49" parent="11" name="name">
       <Position>1</Position>
     </column>
-    <column id="48" parent="11" name="seq">
+    <column id="50" parent="11" name="seq">
       <Position>2</Position>
     </column>
-    <column id="49" parent="12" name="id">
+    <column id="51" parent="12" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="50" parent="12" name="table_id">
+    <column id="52" parent="12" name="table_id">
       <Position>2</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <column id="51" parent="12" name="table_name">
+    <column id="53" parent="12" name="table_name">
       <Position>3</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="52" parent="12" name="column_name">
+    <column id="54" parent="12" name="column_name">
       <Position>4</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="53" parent="12" name="constraint_key">
+    <column id="55" parent="12" name="constraint_key">
       <Position>5</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="54" parent="12" name="is_null">
+    <column id="56" parent="12" name="is_null">
       <Position>6</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="55" parent="12" name="type">
+    <column id="57" parent="12" name="type">
       <Position>7</Position>
       <DataType>TEXT|0s</DataType>
     </column>
-    <column id="56" parent="12" name="gen_type">
+    <column id="58" parent="12" name="gen_type">
       <Position>8</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="57" parent="12" name="len">
+    <column id="59" parent="12" name="len">
       <Position>9</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <index id="58" parent="12" name="table_info_id_uindex">
+    <index id="60" parent="12" name="table_info_id_uindex">
       <ColNames>id</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="59" parent="12" name="table_info_pk">
+    <key id="61" parent="12" name="table_info_pk">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>table_info_id_uindex</UnderlyingIndexName>
