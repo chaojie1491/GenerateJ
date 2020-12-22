@@ -8,10 +8,9 @@
         <id name="id">
             <column name="id" sql-type="integer"/>
             <generator class="increment"/>
-
         </id>
         <property name="tableId">
-            <column name="table_id" sql-type="integer" not-null="true"/>
+            <column name="table_id" sql-type="integer" not-null="false"/>
         </property>
         <property name="tableName">
             <column name="table_name" sql-type="text" not-null="true"/>
@@ -29,10 +28,16 @@
             <column name="type" sql-type="text" not-null="true"/>
         </property>
         <property name="genType">
-            <column name="gen_type" sql-type="text" not-null="false"/>
+            <column name="gen_type" sql-type="text" not-null="true"/>
         </property>
         <property name="len">
             <column name="len" sql-type="integer" not-null="true"/>
+        </property>
+        <property name="tbDesc">
+            <column name="tb_desc" sql-type="text" not-null="true"/>
+        </property>
+        <property name="fieldDesc">
+            <column name="field_desc" sql-type="text" not-null="true"/>
         </property>
     </class>
 </hibernate-mapping>

@@ -42,6 +42,7 @@ import jfxtras.styles.jmetro.Style;
 import org.controlsfx.control.CheckListView;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import sun.reflect.generics.tree.Tree;
 import util.GenUtil;
@@ -51,6 +52,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY;
 
@@ -94,77 +96,73 @@ public class GenController extends Scene {
                             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
                             Connection con = DriverManager.getConnection(url, config.getString("username"), config.getString("password"));
-                            String tableInfoSql = String.format("select * from %s..sysobjects where xtype = 'U' and name = '%s'", config.getString("database"), tbName);
-                            String constraintKeySql = String.format("SELECT  TABLE_NAME,COLUMN_NAME  FROM  INFORMATION_SCHEMA.KEY_COLUMN_USAGE  WHERE  TABLE_NAME= '%s';", tbName);
-                            String columnsSql = String.format(" SELECT syscolumns.name,systypes.name as type,syscolumns.isnullable, syscolumns.length  FROM syscolumns, systypes  WHERE syscolumns.xusertype = systypes.xusertype  AND syscolumns.id = object_id('%s')", tbName);
-                            Statement st2 = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                                    ResultSet.CONCUR_READ_ONLY);
-                            ResultSet columnRes = st2.executeQuery(columnsSql);
                             Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                                     ResultSet.CONCUR_READ_ONLY);
-                            ResultSet rs = stmt.executeQuery(tableInfoSql);
-                            Statement st3 = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                                    ResultSet.CONCUR_READ_ONLY);
-                            ResultSet keyList = st3.executeQuery(constraintKeySql);
+                            System.out.println(GenUtil.getSql(tbName));
+                            ResultSet rs = stmt.executeQuery(GenUtil.getSql(tbName));
+                            rs.last();
+                            double progressItem = ((double) (100.0 - i) / rs.getRow());
                             List<TableInfoEntity> tableInfoEntities = null;
+                            try {
+
+                                Query query = session.createQuery("from entity.TableInfoEntity where tableName = :tbName");
+                                query.setString("tbName", tbName);
+                                tableInfoEntities = query.getResultList();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             Transaction transaction;
                             if (session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE)) {
                                 transaction = session.getTransaction();
                             } else {
                                 transaction = session.beginTransaction();
                             }
-                            columnRes.last();
-                            double progressItem = ((double) (100.0 - i) / columnRes.getRow());
-                            columnRes.beforeFirst();
+
+                            String tbComment = "";
+                            rs.beforeFirst();
+
                             while (rs.next()) {
-                                tableInfoEntities = session.createQuery("from entity.TableInfoEntity where tableId = " + rs.getString("id")).list();
-                                while (columnRes.next()) {
-
-
-                                    TableInfoEntity tableInfoEntity;
-                                    if (tableInfoEntities == null || tableInfoEntities.size() == 0) {
-                                        tableInfoEntity = new TableInfoEntity();
-                                    } else {
-                                        tableInfoEntity = tableInfoEntities.get(0);
-                                    }
-
-                                    if (Objects.isNull(tableInfoEntity)) {
-                                        tableInfoEntity = new TableInfoEntity();
-                                    }
-                                    tableInfoEntity.setTableId(rs.getShort("id"));
-                                    tableInfoEntity.setTableName(rs.getString("name"));
-                                    tableInfoEntity.setColumnName(columnRes.getString("name"));
-                                    if (columnRes.getInt("isnullable") == 0) {
-                                        tableInfoEntity.setIsNull("N");
-                                    } else {
-                                        tableInfoEntity.setIsNull("Y");
-                                    }
-                                    keyList.last();
-                                    if (keyList.getRow() > 0) {
-                                        keyList.beforeFirst();
-                                        while (keyList.next()) {
-                                            if (keyList.getString("COLUMN_NAME").equals(columnRes.getString("name"))) {
-                                                tableInfoEntity.setConstraintKey("Y");
-                                            } else {
-                                                tableInfoEntity.setConstraintKey("N");
-                                            }
+                                System.out.println(rs.getString("tbComment"));
+                                System.out.println(rs.getString("tbName"));
+                                System.out.println(rs.getString("fieldName"));
+                                TableInfoEntity tableInfoEntity;
+                                if (tableInfoEntities == null || tableInfoEntities.size() == 0) {
+                                    tableInfoEntity = new TableInfoEntity();
+                                } else {
+                                    List<TableInfoEntity> filterInfo = tableInfoEntities.stream().filter(t -> {
+                                        try {
+                                            return t.getColumnName().equals(rs.getString("fieldName"));
+                                        } catch (SQLException throwables) {
+                                            throwables.printStackTrace();
                                         }
+                                        return false;
+                                    }).collect(Collectors.toList());
+                                    if (filterInfo.size() != 0) {
+                                        tableInfoEntity = filterInfo.get(0);
                                     } else {
-                                        tableInfoEntity.setConstraintKey("N");
+                                        tableInfoEntity = new TableInfoEntity();
                                     }
-                                    tableInfoEntity.setLen((short) columnRes.getInt("length"));
-                                    tableInfoEntity.setType(columnRes.getString("type"));
-                                    tableInfoEntity.setGenType(GenUtil.getGenType(columnRes.getString("type")));
-                                    session.saveOrUpdate(tableInfoEntity);
                                 }
-                                st2.close();
-                                st3.close();
+                                if (Objects.isNull(tableInfoEntity)) {
+                                    tableInfoEntity = new TableInfoEntity();
+                                }
+                                System.out.println("ID:" + rs.getString("id"));
+                                tableInfoEntity.setTableName(tbName);
+                                tableInfoEntity.setTbDesc(tbComment);
+                                tableInfoEntity.setColumnName(rs.getString("fieldName"));
+                                tableInfoEntity.setConstraintKey(rs.getString("constrain_key"));
+                                tableInfoEntity.setIsNull(rs.getString("nullable"));
+                                tableInfoEntity.setFieldDesc(rs.getString("fieldComment"));
+                                tableInfoEntity.setLen(Short.valueOf(rs.getString("len")));
+                                tableInfoEntity.setGenType(GenUtil.getGenType(rs.getString("type")));
+                                tableInfoEntity.setType(rs.getString("type"));
+                                session.saveOrUpdate(tableInfoEntity);
                                 i += progressItem;
                                 updateProgress(i, 100);
                             }
+                            transaction.commit();
                             stmt.close();
                             con.close();
-                            transaction.commit();
                             updateProgress(100, 100);
                             Platform.runLater(new Runnable() {
                                 @Override
@@ -308,7 +306,7 @@ public class GenController extends Scene {
 
                 try {
                     GenUtil.genFile(ruleEntity, tableInfoEntities, checked, settingEntity);
-                    CommonDialog.showError(Style.DARK,"OK","生成完成");
+                    CommonDialog.showError(Style.DARK, "OK", "生成完成");
                 } catch (IOException e) {
                     e.printStackTrace();
                     CommonDialog.showJMetroAlertWithExpandableContent(Style.DARK, "错误", e);

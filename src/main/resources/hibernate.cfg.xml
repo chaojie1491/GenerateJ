@@ -17,19 +17,17 @@
         <property name="hibernate.show_sql">true</property>
         <mapping class="entity.OriginEntity"/>
         <mapping resource="hbm/Origin.xml"/>
-        <mapping resource="hbm/RuleEntityhbm.xml"/>
-        <mapping class="entity.RuleEntity"/>
-        <mapping resource="hbm/FtlFileEntityhbm.xml"/>
+
         <mapping class="entity.FtlFileEntity"/>
         <mapping resource="hbm/FtlFileEntityhbm.xml"/>
-        <mapping resource="SettingEntityhbm.xml"/>
-        <mapping class="entity.SettingEntity"/>
-        <mapping class="entity.TableInfoEntity"/>
-        <mapping resource="hbm/TableInfoEntityhbm.xml"/>
-        <mapping resource="hbm/TableInfoEntityhbm.xml"/>
-        <mapping resource="hbm/TableInfoEntityhbm.xml"/>
+
+        <mapping class="entity.RuleEntity"/>
         <mapping resource="hbm/RuleEntityhbm.xml"/>
-        <mapping resource="hbm/FtlFileEntityhbm.xml"/>
+
+        <mapping resource="hbm/SettingEntityhbm.xml"/>
+        <mapping class="entity.SettingEntity"/>
+        <mapping resource="hbm/TableInfoEntityhbm.xml"/>
+        <mapping class="entity.TableInfoEntity"/>
 
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->

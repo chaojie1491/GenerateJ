@@ -12,6 +12,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "table_info", schema = "main")
 public class TableInfoEntity {
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private short id;
     private Short tableId;
     private String tableName;
@@ -24,42 +25,43 @@ public class TableInfoEntity {
     private StringProperty lenProper = new SimpleStringProperty();
     private BooleanProperty isKey = new SimpleBooleanProperty(true);
     private BooleanProperty isNullable = new SimpleBooleanProperty(true);
-    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    private String tbDesc;
+    private String fieldDesc;
 
     public String getLenProper() {
         return lenProper.get();
-    }
-
-    public StringProperty lenProperProperty() {
-        return lenProper;
     }
 
     public void setLenProper(String lenProper) {
         this.lenProper.set(lenProper);
     }
 
-    public boolean isIsNullable() {
-        return isNullable.get();
+    public StringProperty lenProperProperty() {
+        return lenProper;
     }
 
-    public BooleanProperty isNullableProperty() {
-        return isNullable;
+    public boolean isIsNullable() {
+        return isNullable.get();
     }
 
     public void setIsNullable(boolean isNullable) {
         this.isNullable.set(isNullable);
     }
 
+    public BooleanProperty isNullableProperty() {
+        return isNullable;
+    }
+
     public boolean isIsKey() {
         return isKey.get();
     }
 
-    public BooleanProperty isKeyProperty() {
-        return isKey;
-    }
-
     public void setIsKey(boolean isKey) {
         this.isKey.set(isKey);
+    }
+
+    public BooleanProperty isKeyProperty() {
+        return isKey;
     }
 
     @Id
@@ -191,5 +193,26 @@ public class TableInfoEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, tableId, tableName, columnName, constraintKey, isNull, type, genType, len);
+    }
+
+
+    @Basic
+    @Column(name = "tb_desc", nullable = true, length = -1)
+    public String getTbDesc() {
+        return tbDesc;
+    }
+
+    public void setTbDesc(String tbDesc) {
+        this.tbDesc = tbDesc;
+    }
+
+    @Basic
+    @Column(name = "field_desc", nullable = true, length = -1)
+    public String getFieldDesc() {
+        return fieldDesc;
+    }
+
+    public void setFieldDesc(String fieldDesc) {
+        this.fieldDesc = fieldDesc;
     }
 }

@@ -71,7 +71,6 @@ public class RuleEntity {
     public void setNamespace(String namespace) {
         this.namespace = namespace;
         pcs.firePropertyChange("namespace", namespace, namespace);
-
     }
 
     @Basic

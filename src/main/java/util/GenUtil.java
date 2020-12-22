@@ -53,6 +53,43 @@ public class GenUtil {
     }
 
 
+    public static String getSql(String tbName) {
+        String sql = "SELECT cast(case when a.colorder = 1 then d.name else '' end as varchar(500)) as tbName,\n" +
+                "       cast(case when a.colorder = 1 then isnull(f.value, '') else '' end as varchar(500)) as tbComment,\n" +
+                "       cast(a.colorder as varchar(500)) as fieldNo,\n" +
+                "       cast(a.name as varchar(500)) as fieldName,\n" +
+                "       cast(a.id as varchar(500)) as id,\n" +
+                "       cast(case when COLUMNPROPERTY(a.id, a.name, 'IsIdentity') = 1 then '√' else '' end as varchar(500)) as alis,\n" +
+                "       cast(case\n" +
+                "                         when exists(SELECT 1\n" +
+                "                                     FROM sysobjects\n" +
+                "                                     where xtype = 'PK'\n" +
+                "                                       and name in (\n" +
+                "                                         SELECT name\n" +
+                "                                         FROM sysindexes\n" +
+                "                                         WHERE indid in (\n" +
+                "                                             SELECT indid\n" +
+                "                                             FROM sysindexkeys\n" +
+                "                                             WHERE id = a.id\n" +
+                "                                               AND colid = a.colid\n" +
+                "                                         ))) then 'Y'\n" +
+                "                         else 'N' end as varchar(500)) as constrain_key,\n" +
+                "       cast(b.name as varchar(500)) as type,\n" +
+                "       cast(COLUMNPROPERTY(a.id, a.name, 'PRECISION') as varchar(500)) as len,\n" +
+                "       cast(case when a.isnullable = 1 then 'Y' else 'N' end as varchar(500)) as nullable,\n" +
+                "       cast(isnull(e.text, '')  as varchar(500)) as defaultVal,\n" +
+                "       cast(isnull(g.[value], '') as varchar(500)) as fieldComment\n" +
+                "FROM syscolumns a\n" +
+                "         left join systypes b on a.xusertype = b.xusertype\n" +
+                "         inner join sysobjects d on a.id = d.id and d.xtype = 'U' and d.name <> 'dtproperties'\n" +
+                "         left join syscomments e on a.cdefault = e.id\n" +
+                "         left join sys.extended_properties g on a.id = g.major_id and a.colid = g.minor_id\n" +
+                "         left join sys.extended_properties f on d.id = f.major_id and f.minor_id = 0\n" +
+                String.format("where d.name = '%s'", tbName) +
+                "order by a.id, a.colorder";
+        return sql;
+    }
+
     public static void genFile(RuleEntity ruleEntity, List<TableInfoEntity> entities, List<FtlFileEntity> ftlFileEntities, SettingEntity settingEntity) throws IOException, TemplateException {
         Configuration configuration = new Configuration();
 
