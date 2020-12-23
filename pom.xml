@@ -4,6 +4,73 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <name>GenerateJ</name>
+    <url>http://maven.apache.org</url>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <!--                            <appName>${project.build.finalName}-${project.version}</appName>-->
+                            <classpathPrefix>libs/</classpathPrefix>
+                            <mainClass>App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>com.zenjava</groupId>-->
+            <!--                <artifactId>javafx-maven-plugin</artifactId>-->
+            <!--                <configuration>-->
+            <!--                    &lt;!&ndash; 启动类 &ndash;&gt;-->
+            <!--                    <mainClass>EnterApplication</mainClass>-->
+            <!--                    &lt;!&ndash; 运行文件名 &ndash;&gt;-->
+            <!--                    <appName>${project.build.finalName}</appName>-->
+            <!--                    &lt;!&ndash; 图标的位置，默认位置 src/main/deploy &ndash;&gt;-->
+            <!--                    <deployDir>${basedir}/src/main/deploy</deployDir>-->
+            <!--                    &lt;!&ndash; 菜单 &ndash;&gt;-->
+            <!--                    <needMenu>true</needMenu>-->
+            <!--                    &lt;!&ndash; 桌面图标 &ndash;&gt;-->
+            <!--                    <needShortcut>true</needShortcut>-->
+            <!--                    &lt;!&ndash; 公司名称 &ndash;&gt;-->
+            <!--                    <vendor>DC</vendor>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
+            <plugin>
+                <groupId>com.zenjava</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>8.8.3</version>
+                <configuration>
+                    <vendor>DC</vendor>
+                    <verbose>true</verbose><!-- always a good idea to have this set to true while debugging -->
+                    <mainClass>EnterApplication</mainClass>
+                    <deployDir>${basedir}/src/main/deploy</deployDir>
+                    <needMenu>true</needMenu>
+                    <!-- 桌面图标 -->
+                    <dropinResourcesRoot>${basedir}/src/main/deploy</dropinResourcesRoot>
+                    <appName>GenerateJ</appName>
+
+                    <needShortcut>true</needShortcut>
+                    <!-- 公司名称 -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <!-- 设置编码及版本号 -->
     <properties>
@@ -12,6 +79,9 @@
         <!--默认关掉单元测试 -->
         <skipTests>true</skipTests>
         <fastjson.version>1.2.31</fastjson.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
     </properties>
 
     <groupId>ciemis.com</groupId>
@@ -128,17 +198,5 @@
         <!-- alibaba fastjson -->
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>alimaven</id>
-            <name>Maven Aliyun Mirror</name>
-            <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+
 </project>

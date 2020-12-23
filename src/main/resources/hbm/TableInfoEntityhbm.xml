@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
     <class name="entity.TableInfoEntity" table="table_info" schema="main">
@@ -38,6 +38,9 @@
         </property>
         <property name="fieldDesc">
             <column name="field_desc" sql-type="text" not-null="true"/>
+        </property>
+        <property name="identity">
+            <column name="identity" sql-type="text" not-null="true"/>
         </property>
     </class>
 </hibernate-mapping>

@@ -10,10 +10,6 @@ import dao.TableInfoDao;
 import entity.*;
 import freemarker.template.TemplateException;
 import javafx.application.Platform;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.property.adapter.JavaBeanStringPropertyBuilder;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -39,6 +35,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.util.Callback;
 import jfxtras.styles.jmetro.Style;
+import org.apache.poi.ss.formula.functions.T;
 import org.controlsfx.control.CheckListView;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -70,6 +67,7 @@ public class GenController extends Scene {
     ProgressBar progressBar;
     HBox progressBox;
     Button generate;
+    TextField searchTb;
 
     Service<Integer> service = new Service<Integer>() {
         @Override
@@ -156,6 +154,7 @@ public class GenController extends Scene {
                                 tableInfoEntity.setLen(Short.valueOf(rs.getString("len")));
                                 tableInfoEntity.setGenType(GenUtil.getGenType(rs.getString("type")));
                                 tableInfoEntity.setType(rs.getString("type"));
+                                tableInfoEntity.setIdentity(rs.getString("autoAdd"));
                                 session.saveOrUpdate(tableInfoEntity);
                                 i += progressItem;
                                 updateProgress(i, 100);
@@ -252,8 +251,14 @@ public class GenController extends Scene {
             progressBar = (ProgressBar) this.lookup("#progressBar");
             progressBox = (HBox) this.lookup("#progressBox");
             generate = (Button) this.lookup("#generate");
+            searchTb = (TextField) this.lookup("#searchTb");
 
-
+            searchTb.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    search(newValue);
+                }
+            });
             JSONArray tables = CommonStage.db_info.getJSONArray("db_table");
             tables.forEach(t -> {
                 dbs.add(t.toString());
@@ -286,41 +291,55 @@ public class GenController extends Scene {
             initFtlCheckView();
             //生成代码
             generate.setOnMouseClicked(event -> {
-                String tbName = dbList.getSelectionModel().selectedItemProperty().getValue();
-                List<TableInfoEntity> tableInfoEntities = TableInfoDao.getRules(session, tbName);
-                if (Objects.isNull(checked) || checked.size() == 0) {
-                    CommonDialog.showError(Style.DARK, "错误", "请选择模板文件");
-                } else {
-                    checked.forEach(c -> {
-                        System.out.println(c.getFileName());
-                    });
-                }
-                RuleEntity ruleEntity = rulesView.getSelectionModel().selectedItemProperty().getValue();
-                if (Objects.isNull(ruleEntity)) {
-                    CommonDialog.showError(Style.DARK, "错误", "请选择生成规则");
-                } else {
-                    System.out.println(ruleEntity.getEntityPrefix());
-                }
+                List<String> strings = dbList.getCheckModel().getCheckedItems();
+                strings.forEach(s->{
+                    List<TableInfoEntity> tableInfoEntities = TableInfoDao.getRules(session, s);
 
-                SettingEntity settingEntity = (SettingEntity) session.createQuery("from entity.SettingEntity").list().get(0);
+                    if (Objects.isNull(checked) || checked.size() == 0) {
+                        CommonDialog.showError(Style.DARK, "错误", "请选择模板文件");
+                    } else {
+                        checked.forEach(c -> {
+                            System.out.println(c.getFileName());
+                        });
+                    }
+                    RuleEntity ruleEntity = rulesView.getSelectionModel().selectedItemProperty().getValue();
+                    if (Objects.isNull(ruleEntity)) {
+                        CommonDialog.showError(Style.DARK, "错误", "请选择生成规则");
+                    } else {
+                        System.out.println(ruleEntity.getEntityPrefix());
+                    }
 
-                try {
-                    GenUtil.genFile(ruleEntity, tableInfoEntities, checked, settingEntity);
-                    CommonDialog.showError(Style.DARK, "OK", "生成完成");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    CommonDialog.showJMetroAlertWithExpandableContent(Style.DARK, "错误", e);
+                    SettingEntity settingEntity = (SettingEntity) session.createQuery("from entity.SettingEntity").list().get(0);
+                    try {
+                        GenUtil.genFile(ruleEntity, tableInfoEntities, checked, settingEntity);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        CommonDialog.showJMetroAlertWithExpandableContent(Style.DARK, "错误", e);
 
-                } catch (TemplateException e) {
-                    e.printStackTrace();
-                    CommonDialog.showJMetroAlertWithExpandableContent(Style.DARK, "错误", e);
-                }
+                    } catch (TemplateException e) {
+                        e.printStackTrace();
+                        CommonDialog.showJMetroAlertWithExpandableContent(Style.DARK, "错误", e);
+                    }
+                });
+                CommonDialog.showError(Style.DARK, "OK", "生成完成");
             });
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public void search(String newVal) {
+
+        String value = newVal.toUpperCase();
+        ObservableList<String> subentries = FXCollections.observableArrayList();
+        subentries.addAll(dbs);
+
+        if (!newVal.isEmpty()){
+            dbList.setItems(subentries.filtered(t -> t.indexOf(value) > 0));
+        }else{
+            dbList.setItems(dbs);
+        }
+    }
 
     public void initTable() {
         TableColumn<TableInfoEntity, String> fieldName = new TableColumn<>("字段名");

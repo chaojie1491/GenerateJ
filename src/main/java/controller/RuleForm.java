@@ -35,6 +35,7 @@ public class RuleForm extends Scene {
     TextField entitySuffix;
     TextField tablePrefix;
     TextField parentClass;
+    TextField model;
     ChoiceBox<String> language;
     CheckBox uc;
 
@@ -194,6 +195,7 @@ public class RuleForm extends Scene {
             tablePrefix = (TextField) this.lookup("#tablePrefix");
             entityPrefix = (TextField) this.lookup("#entityPrefix");
             entitySuffix = (TextField) this.lookup("#entitySuffix");
+            model = (TextField) this.lookup("#model");
             parentClass = (TextField) this.lookup("#parentClass");
             uc = (CheckBox) this.lookup("#uc");
             ruleEntityTableView = (TableView<RuleEntity>) this.lookup("#ruleTable");
@@ -214,6 +216,7 @@ public class RuleForm extends Scene {
                     ruleEntity.setNamespace(namespace.getText());
                     ruleEntity.setRuleName(name.getText());
                     ruleEntity.setPatentClass(parentClass.getText());
+                    ruleEntity.setModel(model.getText());
                     Session session = HibernateUtil.currentSession();
                     Transaction transaction;
                     if (session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE)) {

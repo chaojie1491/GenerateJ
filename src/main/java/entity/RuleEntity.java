@@ -5,7 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.Objects;
 
 @Entity
-@Table(name = "rule", schema = "main")
+@Table(name = "rule", schema = "main", catalog = "")
 public class RuleEntity {
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private short id;
@@ -17,6 +17,7 @@ public class RuleEntity {
     private String entitySuffix;
     private String isUc;
     private String patentClass;
+    private String model;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -135,5 +136,15 @@ public class RuleEntity {
 
     public void setPatentClass(String patentClass) {
         this.patentClass = patentClass;
+    }
+
+    @Basic
+    @Column(name = "model", nullable = true, length = -1)
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 }

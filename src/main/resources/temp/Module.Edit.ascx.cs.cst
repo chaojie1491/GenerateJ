@@ -1,0 +1,219 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates the code behind file for a module Edit page." %>
+<%@ Property Name="NameSpace" Type="String" Default="He3" Category="EntityClass" Description="The assembly that contains the entity class." %>
+<%@ Property Name="ModuleName" Type="String" Category="EntityClass" Description="The module name of current module, for example, 'User Admin'" %>
+<%@ Property Name="ClassName" Type="String"  Category="EntityClass" Description="The editing entity class name, for example, 'User'" %>
+<%@ Property Name="Mapping" Type="He3.CodeSmith.MappingProperty" Category="Mapping" Description="The O/R mapping settings." %>
+<%@ Assembly Name="He3.CodeSmith" %>
+<%@ Import Namespace="He3.CodeSmith" %>
+<%@ Import Namespace="System.Text" %>
+using System;
+using System.Linq;
+using System.Web;
+using System.Collections;
+using log4net;
+using <%=NameSpace%>.Model.<%=ModuleName%>;
+using <%=NameSpace%>.Web;
+using <%=NameSpace%>.Application.Base;
+
+
+public partial class <%=ClassName%>_Edit : ModuleBase
+{
+    public event EventHandler Back;
+    private object[] paramKeys
+    {
+        get
+        {
+            return (object[])ViewState[this.Page.ClientQueryString + "paramKeys"];
+        }
+        set
+        {
+            ViewState[this.Page.ClientQueryString + "paramKeys"] = value;
+        }
+    }
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+        }
+    }
+
+    public void InitPageParameter(object[] paramKeys)
+    {
+        this.paramKeys = paramKeys;
+        var entity = LoadEntity(paramKeys);
+        <% 
+        foreach (MappingInfo mappingInfo in this.Mapping.MappingInfoCollection) 
+        {
+            if (mappingInfo.DataType == "Boolean")
+        	{
+                if (mappingInfo.IsNullable)
+                {
+                %>
+        cb<%=mappingInfo.ClassPropertyName%>.Checked = entity.<%=mappingInfo.ClassPropertyName%> ?? false;
+                <%
+                }
+                else
+                {
+            %>
+        cb<%=mappingInfo.ClassPropertyName%>.Checked = entity.<%=mappingInfo.ClassPropertyName%>;
+        	<%
+                }
+        	}
+            else
+        	{
+                string propername = "";   
+                
+                if (mappingInfo.DataType == "String")
+            	{
+            		 propername ="entity." + mappingInfo.ClassPropertyName;     
+            	}
+                else
+            	{
+                    if (mappingInfo.IsNullable)
+                	{
+                        string _propername= string.Empty;
+                        if (mappingInfo.DataType == "DateTime")
+                    	{
+                    		 _propername ="entity." + mappingInfo.ClassPropertyName + @".Value.ToString(""yyyy-MM-dd HH:mm"")";
+                    	}
+                        else if(mappingInfo.DataType == "Decimal")
+                    	{
+                    	     _propername ="entity." + mappingInfo.ClassPropertyName + @".Value.ToString(""0.########"")";   
+                    	}
+                        else
+                    	{
+                    	     _propername ="entity." + mappingInfo.ClassPropertyName + @".Value.ToString()"; 
+                    	}
+                		propername= "entity." + mappingInfo.ClassPropertyName + ".HasValue ? " + _propername + ": string.Empty";
+                	}
+                    else
+                	{
+                        if (mappingInfo.DataType == "DateTime")
+                    	{
+                    		 propername ="entity." + mappingInfo.ClassPropertyName + @".ToString(""yyyy-MM-dd HH:mm"")";
+                    	}
+                        else if(mappingInfo.DataType == "Decimal")
+                    	{
+                    	     propername ="entity." + mappingInfo.ClassPropertyName + @".ToString(""0.########"")";   
+                    	}
+                        else
+                    	{
+                    	     propername ="entity." + mappingInfo.ClassPropertyName + @".ToString()"; 
+                    	}
+                	}
+            	}
+                
+                if (mappingInfo.IsEdit)
+            	{                  
+             %>             
+        tb<%=mappingInfo.ClassPropertyName%>.Text = <%=propername%>;
+        	<%
+            	}
+                else
+            	{
+             	%>
+        lb<%=mappingInfo.ClassPropertyName%>.Text = <%=propername%>;
+        	<%
+            	}
+        	}
+        } 
+        %>
+    }
+
+    public void InitPageParameter(<%=ClassName%> entity)
+    {
+        <% 
+        var paramKeys = string.Empty;
+        foreach (MappingInfo mappingInfo in Mapping.MappingInfoCollection)
+        {
+            if (mappingInfo.IsPK)
+        	{
+        		paramKeys += string.Format(@"entity.{0},", mappingInfo.ClassPropertyName);
+        	}
+        } 
+        paramKeys= paramKeys.Substring(0,paramKeys.Length - 1);
+        %>
+    
+        this.paramKeys = new object[] { <%=paramKeys%> };
+        InitPageParameter(this.paramKeys);
+    }
+
+    protected void btnBack_Click(object sender, EventArgs e)
+    {
+        if (Back != null)
+        {
+            Visible = false;
+            Back(sender, e);
+        }
+    }
+
+    protected void btnUpdate_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var entity = LoadEntity(paramKeys);
+            
+            <% 
+            foreach (MappingInfo mappingInfo in this.Mapping.MappingInfoCollection) 
+            {
+                if(!mappingInfo.IsPK && mappingInfo.IsEdit)
+                {
+                    if (mappingInfo.DataType != "Boolean")
+                	{
+                    %>
+            tb<%=mappingInfo.ClassPropertyName%>.Text = tb<%=mappingInfo.ClassPropertyName%>.Text.Trim();
+                        <% 
+                        if(mappingInfo.DataType != "String")
+                        {
+                        %>
+            entity.<%=mappingInfo.ClassPropertyName%> = Convert.To<%=mappingInfo.DataType%>(tb<%=mappingInfo.ClassPropertyName%>.Text);
+                        <%
+                        }
+                        else
+                    	{
+                        %>
+            entity.<%=mappingInfo.ClassPropertyName%> = tb<%=mappingInfo.ClassPropertyName%>.Text;
+                    <%
+                    	}
+                	}
+                    else
+                	{
+                        %>
+             entity.<%=mappingInfo.ClassPropertyName%> = cb<%=mappingInfo.ClassPropertyName%>.Checked;
+                       <%
+                	}
+                }
+            } 
+            %>
+            
+            TheGenericMgr.Update(entity, this.CurrentUser.Code);
+            ShowSuccessMessage("更新成功");
+            InitPageParameter(paramKeys);
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage(ex);
+        }
+    }
+
+    private <%=ClassName%> LoadEntity(object[] paramKeys)
+    {
+        <%
+        string wheresql = " where 1=1 ";
+        foreach (MappingInfo mappingInfo in this.Mapping.MappingInfoCollection) 
+        {
+            if (mappingInfo.IsPK)
+        	{
+        		wheresql+= " and " + mappingInfo.ClassPropertyName + "=? ";
+        	}
+        }
+        %>
+        var list = TheGenericMgr.FindAll<<%=ClassName%>>(" from <%=ClassName%> <%=wheresql%> ", paramKeys);
+        if (list != null && list.Any())
+        {
+            return list[0];
+        }
+        return null;
+    }
+}

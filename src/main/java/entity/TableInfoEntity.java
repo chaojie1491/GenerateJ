@@ -10,7 +10,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.Objects;
 
 @Entity
-@Table(name = "table_info", schema = "main")
+@Table(name = "table_info", schema = "main", catalog = "")
 public class TableInfoEntity {
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private short id;
@@ -27,6 +27,7 @@ public class TableInfoEntity {
     private BooleanProperty isNullable = new SimpleBooleanProperty(true);
     private String tbDesc;
     private String fieldDesc;
+    private String identity;
 
     public String getLenProper() {
         return lenProper.get();
@@ -195,7 +196,6 @@ public class TableInfoEntity {
         return Objects.hash(id, tableId, tableName, columnName, constraintKey, isNull, type, genType, len);
     }
 
-
     @Basic
     @Column(name = "tb_desc", nullable = true, length = -1)
     public String getTbDesc() {
@@ -214,5 +214,15 @@ public class TableInfoEntity {
 
     public void setFieldDesc(String fieldDesc) {
         this.fieldDesc = fieldDesc;
+    }
+
+    @Basic
+    @Column(name = "identity", nullable = true, length = -1)
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
     }
 }

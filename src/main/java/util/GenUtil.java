@@ -59,7 +59,7 @@ public class GenUtil {
                 "       cast(a.colorder as varchar(500)) as fieldNo,\n" +
                 "       cast(a.name as varchar(500)) as fieldName,\n" +
                 "       cast(a.id as varchar(500)) as id,\n" +
-                "       cast(case when COLUMNPROPERTY(a.id, a.name, 'IsIdentity') = 1 then '√' else '' end as varchar(500)) as alis,\n" +
+                "       cast(case when COLUMNPROPERTY(a.id, a.name, 'IsIdentity') = 1 then 'Y' else 'N' end as varchar(500)) as autoAdd,\n" +
                 "       cast(case\n" +
                 "                         when exists(SELECT 1\n" +
                 "                                     FROM sysobjects\n" +
@@ -85,8 +85,7 @@ public class GenUtil {
                 "         left join syscomments e on a.cdefault = e.id\n" +
                 "         left join sys.extended_properties g on a.id = g.major_id and a.colid = g.minor_id\n" +
                 "         left join sys.extended_properties f on d.id = f.major_id and f.minor_id = 0\n" +
-                String.format("where d.name = '%s'", tbName) +
-                "order by a.id, a.colorder";
+                String.format("where d.name = '%s'order by a.id, a.colorder", tbName);
         return sql;
     }
 
@@ -97,6 +96,7 @@ public class GenUtil {
         configuration.setDirectoryForTemplateLoading(new File(settingEntity.getFtlPath()));
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put("packageName", ruleEntity.getNamespace());
+        dataMap.put("model", ruleEntity.getModel());
         dataMap.put("className", entities.get(0).getTableName().replaceAll("_", ""));
         dataMap.put("tableName", entities.get(0).getTableName());
         dataMap.put("fields", entities);
@@ -108,10 +108,17 @@ public class GenUtil {
         for (int i = 0; i < ftlFileEntities.size(); i++) {
             Template template = configuration.getTemplate(ftlFileEntities.get(i).getNowName());
             File docFile;
+            String path = settingEntity.getOutPath() + "\\" + dataMap.get("className");
+            File file = new File(path);
+            if (!file.exists()) {
+                file.mkdir();
+            }
             if (ftlFileEntities.get(i).getFileName().contains("cs")) {
-                docFile = new File(settingEntity.getOutPath() + "\\" + dataMap.get("className") + ".cs");
+                docFile = new File(path + "\\" + dataMap.get("className") + ".cs");
+            } else if (ftlFileEntities.get(i).getFileName().contains(".ascx.ftl")) {
+                docFile = new File(path + "\\" + "Main" + ".ascx");
             } else {
-                docFile = new File(settingEntity.getOutPath() + "\\" + dataMap.get("className") + ".hbm" + ".xml");
+                docFile = new File(path + "\\" + dataMap.get("className") + ".hbm" + ".xml");
             }
             out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(docFile)));
             template.process(dataMap, out);

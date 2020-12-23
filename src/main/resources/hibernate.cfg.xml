@@ -28,6 +28,8 @@
         <mapping class="entity.SettingEntity"/>
         <mapping resource="hbm/TableInfoEntityhbm.xml"/>
         <mapping class="entity.TableInfoEntity"/>
+        <mapping resource="hbm/RuleEntityhbm.xml"/>
+        <mapping resource="hbm/TableInfoEntityhbm.xml"/>
 
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->

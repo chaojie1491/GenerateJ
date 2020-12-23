@@ -1,20 +1,21 @@
 using System;
-using He3.Core.Model;
+using <${ packageName}.Core.Model;
 
-namespace ${packageName}
+namespace ${packageName }.Model.${ model}
 {
 [Serializable]
-public partial class ${className} ${extendsClass}
+public partial class ${ className} ${ extendsClass}
 {
-
+#region O/R Mapping Properties
 <#list fields as field>
     /// <summary>
     /// ${field.fieldDesc}
     /// </summary>
-    public ${field.genType} ${field.columnName} { get; set; }
+    public ${ field.genType} ${ field.columnName}
+    { get; set; }
 
 </#list>
-
+#endregion
 
 }
 
