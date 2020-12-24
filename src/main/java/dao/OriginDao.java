@@ -17,4 +17,9 @@ public class OriginDao {
         strings.addAll(originEntities);
         return strings;
     }
+
+    public static List<OriginEntity> getOriginsList(Session session) {
+        List<OriginEntity> originEntities = session.createQuery("from entity.OriginEntity").list();
+        return originEntities;
+    }
 }

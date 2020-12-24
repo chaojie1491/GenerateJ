@@ -18,6 +18,11 @@ import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.Style;
 import org.hibernate.Session;
 import util.HibernateUtil;
+import util.SqliteUtil;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 
 
 public class EnterApplication extends Application {
@@ -39,6 +44,7 @@ public class EnterApplication extends Application {
 //        stage.setScene(scene);
 //        stage.setTitle("Code Generate Tool");
 //        stage.show();
+
         CommonStage.createStage("Code Generate Tool", new Image("/images/icon/logo.png"), STYLE,
                 new OriginController(session, 400, 350), 400, 350).show();
     }
@@ -53,7 +59,13 @@ public class EnterApplication extends Application {
         LauncherImpl.notifyPreloader(this, new Preloader.ProgressNotification(20));
         session = HibernateUtil.currentSession();
         LauncherImpl.notifyPreloader(this, new Preloader.ProgressNotification(40));
-        Thread.sleep(1000);
+        if (EnterApplication.class.getResource("Gen.db") == null) {
+            try {
+                SqliteUtil.createDatabases();
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+            }
+        }
         LauncherImpl.notifyPreloader(this, new Preloader.ProgressNotification(100));
         Thread.sleep(1000);
     }

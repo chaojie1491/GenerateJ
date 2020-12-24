@@ -107,7 +107,7 @@ public class OriginForm extends Scene {
                 } else {
                     transaction = session.beginTransaction();
                 }
-                session.merge(originEntity);
+                session.save(originEntity);
                 transaction.commit();
                 ((Stage)this.getWindow()).close();
                 session.clear();

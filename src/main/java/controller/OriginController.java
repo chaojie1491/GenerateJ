@@ -10,9 +10,14 @@ import dao.OriginDao;
 import entity.OriginEntity;
 import entity.TableInfoEntity;
 import javafx.application.Platform;
+import javafx.beans.Observable;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.adapter.JavaBeanStringPropertyBuilder;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
@@ -45,7 +50,7 @@ public class OriginController extends BorderPane {
     Session session = HibernateUtil.currentSession();
     private TableView<OriginEntity> table = new TableView<>();
     TableView.TableViewSelectionModel<OriginEntity> originEntityTableSelectionModel;
-
+    ObservableList<OriginEntity> originEntityObservableValue = FXCollections.observableArrayList();
     Button delOrigin = new Button();
     SplitMenuButton run = new SplitMenuButton();
     ProgressBar progressBar;
@@ -411,8 +416,7 @@ public class OriginController extends BorderPane {
         databaseColumn.setStyle("-fx-alignment: CENTER;");
         typeColumn.setStyle("-fx-alignment: CENTER;");
         nameColumn.setStyle("-fx-alignment: CENTER;");
-
-        table.setItems(OriginDao.getOrigins(session));
+        table.setItems(originEntityObservableValue);
         table.setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
         table.getSelectionModel().isCellSelectionEnabled();
         table.setEditable(true);
@@ -429,11 +433,14 @@ public class OriginController extends BorderPane {
                     delOrigin.setDisable(false);
                 }
             }
+
         });
 
         table.getSelectionModel().setCellSelectionEnabled(false);
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.getColumns().addAll(nameColumn, typeColumn, databaseColumn);
+        this.refresh();
+
     }
 
     public OriginController(Session session, int w, int h) {
@@ -559,9 +566,13 @@ public class OriginController extends BorderPane {
     }
 
     private void refresh() {
-        this.table.getItems().clear();
-        this.table.getItems().addAll(OriginDao.getOrigins(session));
-        this.table.refresh();
+        originEntityObservableValue.removeAll(originEntityObservableValue);
+        originEntityObservableValue.addAll(OriginDao.getOriginsList(session));
+        if (OriginDao.getOrigins(session).size() == 0) {
+            this.setCenter(getNoData(400, 300));
+        } else {
+            this.setCenter(table);
+        }
     }
 
     private StackPane getNoData(int w, int h) {

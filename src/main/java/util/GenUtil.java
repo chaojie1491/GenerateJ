@@ -102,6 +102,8 @@ public class GenUtil {
         dataMap.put("fields", entities);
         if (!ruleEntity.getPatentClass().isEmpty()) {
             dataMap.put("extendsClass", " : " + ruleEntity.getPatentClass());
+        } else {
+            dataMap.put("extendsClass", "");
         }
         Writer out = null;
 

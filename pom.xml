@@ -62,7 +62,6 @@
                     <deployDir>${basedir}/src/main/deploy</deployDir>
                     <needMenu>true</needMenu>
                     <!-- 桌面图标 -->
-                    <dropinResourcesRoot>${basedir}/src/main/deploy</dropinResourcesRoot>
                     <appName>GenerateJ</appName>
 
                     <needShortcut>true</needShortcut>
